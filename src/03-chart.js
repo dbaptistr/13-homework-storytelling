@@ -70,8 +70,21 @@ function ready(datapoints) {
   let nycDatapoints = datapoints.filter(d => d.city === 'NYC')
   nycDatapoints.push(nycDatapoints[0])
 
+  // Filter it so I'm only looking at BEIJING datapoints
   let beijingDatapoints = datapoints.filter(d => d.city === 'Beijing')
   beijingDatapoints.push(beijingDatapoints[0])
+
+  // Filter it so I'm only looking at STOCKHOLM datapoints
+  let stmDatapoints = datapoints.filter(d => d.city === 'Stockholm')
+  stmDatapoints.push(stmDatapoints[0])
+
+  // Filter it so I'm only looking at LIMA datapoints
+  let limaDatapoints = datapoints.filter(d => d.city === 'Lima')
+  limaDatapoints.push(limaDatapoints[0])
+
+  // Filter it so I'm only looking at TUSCON datapoints
+  let tsnDatapoints = datapoints.filter(d => d.city === 'Tuscon')
+  tsnDatapoints.push(tsnDatapoints[0])
 
   container
     .append('path')
@@ -123,101 +136,78 @@ function ready(datapoints) {
 
   // Steps start here
 
-  d3.select('#beijing').on('stepin', () => {
-    // svg
-    //   .selectAll('.beijing-bands')
-    //   .data(nested)
-    //   .enter()
-    //   .append('path')
-    //   .transition()
-    //   .attr('class', 'all-lines')
-    //   .attr('d', d => line(d.values))
-    //   .attr('stroke', d => colorScale(d.key))
-    //   .attr('stroke-width', 2)
-    //   .attr('fill', 'none')
-
+  d3.select('#Beijing').on('stepin', () => {
     container
-    .append('path')
-    .attr('class', 'temp')
-    .datum(beijingDatapoints)
-    .attr('d', line)
-    .attr('fill', '#80cdc1')
-    .attr('opacity', 0.75)
+      .select('.temp')
+      .datum(beijingDatapoints)
+      .transition()
+      .attr('d', line)
+      .attr('fill', '#c7eae5')
+      .attr('opacity', 0.75)
 
+    d3.selectAll('.city-name').text('Beijing')
+  })
+
+  d3.select('#Stockholm').on('stepin', () => {
     container
-      .selectAll('.bands')
-      .data(circleBands)
-      .enter()
-      .append('circle')
-      .attr('class', 'bands')
-      .attr('fill', 'none')
-      .attr('stroke', 'gray')
-      .attr('cx', 0)
-      .attr('cy', 0)
-      .attr('r', function(d) {
-        return radiusScale(d)
-      })
-      .lower()
-  
+      .select('.temp')
+      .datum(stmDatapoints)
+      .transition()
+      .attr('d', line)
+      .attr('fill', '#dfc27d')
+      .attr('opacity', 0.75)
+
+    d3.selectAll('.city-name').text('Stockholm')
+  })
+
+  d3.select('#Lima').on('stepin', () => {
     container
-      .append('text')
-      .attr('text-anchor', 'middle')
-      .attr('class', 'city-name')
-      .text('NYC')
-      .attr('font-size', 30)
-      .attr('font-weight', 700)
-      .attr('alignment-baseline', 'middle')
-  
+      .select('.temp')
+      .datum(limaDatapoints)
+      .transition()
+      .attr('d', line)
+      .attr('fill', '#bf812d')
+      .attr('opacity', 0.75)
+
+    d3.selectAll('.city-name').text('Lima')
+  })
+
+  d3.select('#Tuscon').on('stepin', () => {
     container
-      .selectAll('.temp-notes')
-      .data(textBands)
-      .enter()
-      .append('text')
-      .attr('class', 'temp-notes')
-      .attr('x', 0)
-      .attr('y', d => -radiusScale(d))
-      .attr('dy', -2)
-      .text(d => d + '°')
-      .attr('text-anchor', 'middle')
-      .attr('font-size', 8)
+      .select('.temp')
+      .datum(tsnDatapoints)
+      .transition()
+      .attr('d', line)
+      .attr('fill', '#543005')
+      .attr('opacity', 0.75)
 
-    })
-// The render function
-function render() {
-  let screenWidth = svg.node().parentNode.parentNode.offsetWidth
-  let screenHeight = svg.node().parentNode.parentNode.offsetHeight
-  let newWidth = screenWidth - margin.left - margin.right
-  let newHeight = screenHeight - margin.top - margin.bottom
+    d3.selectAll('.city-name').text('Tuscon')
+  })
 
-  let actualSvg = d3.select(svg.node().parentNode)
-  actualSvg
-    .attr('height', newHeight + margin.top + margin.bottom)
-    .attr('width', newWidth + margin.left + margin.right)
-
-    var radiusScale = d3
-    .scaleLinear()
-    .domain([10, 100])
-    .range([40, radius])
-  
-  var angleScale = d3
-    .scalePoint()
-    .domain([
-      'Jan',
-      'Feb',
-      'Mar',
-      'Apr',
-      'May',
-      'Jun',
-      'Jul',
-      'Aug',
-      'Sept',
-      'Oct',
-      'Nov',
-      'Dec',
-      'Blah'
-    ])
-    .range([0, Math.PI * 2])
-}
-window.addEventListener('resize', render)
-render()
+  // The render function
+  // function render() {
+  // // let screenHeight = window.innerHeight
+  // // let screenWidth = (width / height) * screenHeight
+  // let side = Math.min(screenHeight, screenWidth)
+  // let newWidth = side - margin.left - margin.right
+  // let newHeight = side - margin.top - margin.bottom
+  // let actualSvg = d3.select(svg.node().parentNode)
+  // actualSvg
+  //   .attr('height', newHeight + margin.top + margin.bottom)
+  //   .attr('width', newWidth + margin.left + margin.right)
+  // container.attr(
+  //   'transform',
+  //   'translate(' + newWidth / 2 + ',' + newHeight / 2 + ')'
+  // )
+  // var newRadius = (radius / width) * newWidth
+  // // radiusScale.range([(40 / width) * newWidth, newRadius])
+  // svg.selectAll('.bands').attr('r', function(d) {
+  //   return radiusScale(d)
+  // })
+  // svg.selectAll('.temp-notes').attr('y', d => -radiusScale(d))
+  // svg.selectAll('.temp').attr('d', line)
+  // Update axes if necessary
+  // }
+  //   window.addEventListener('resize', render)
+  //   render()
 }
